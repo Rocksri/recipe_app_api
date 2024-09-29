@@ -13,7 +13,7 @@ class Command(BaseCommand):
     """Django command to wait for databse."""
 
     def handle(self, *args, **options):
-        self.stdout.write('Waiting for databasae...')
+        self.stdout.write('Waiting for database...')
         db_up = False
         while db_up is False:
             try:
