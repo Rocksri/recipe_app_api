@@ -1,7 +1,8 @@
 """
 Serializers for the user API View.
 """
-from django.contrib.auth import get_user_model, authenciate
+from django.contrib.auth import (
+    get_user_model, authenticate)
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 
@@ -31,7 +32,7 @@ class AuthTokenSerializer(serializers.Serializer):
         """vaildate and authenticate the user."""
         email = attrs.fet('email')
         password = attrs.get('password')
-        user = authenciate(
+        user = authenticate(
             request=self.context.get('request'),
             username=email,
             password=password,
