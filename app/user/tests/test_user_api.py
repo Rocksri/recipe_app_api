@@ -84,7 +84,7 @@ class PublicUserApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
     def test_create_token_bad_credentials(self):
-        """Test returns error if credentials invaild."""
+        """Test returns error if credentials invalid."""
         create_user(email='test@example.come', password='goodpass')
 
         payload = {'email': 'test@example.com', 'password': 'badpass'}
@@ -110,18 +110,18 @@ class PublicUserApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_retrieve_user_unauthorized(self):
-        """Test authenticate is required for users."""
+        """Test authentication is required for users."""
         res = self.client.get(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class PrivateUserApiTests(TestCase):
-    """Test API requests that requires authentication."""
+    """Test API requests that require authentication."""
 
     def setUp(self):
         self.user = create_user(
-            email='test@example.come',
+            email='test@example.com',
             password='testpass123',
             name='Test Name',
         )
@@ -145,7 +145,7 @@ class PrivateUserApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_update_user_profile(self):
-        """Test update the user profile for the authenticated user."""
+        """Test updating the user profile for the authenticated user."""
         payload = {'name': 'Updated name', 'password': 'newpassword123'}
 
         res = self.client.patch(ME_URL, payload)
