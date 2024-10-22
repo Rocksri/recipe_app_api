@@ -2,13 +2,20 @@
 Tests for recipe APIs.
 """
 from decimal import Decimal
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+
 from rest_framework import status
 from rest_framework.test import APIClient
+
 from core.models import Recipe
-from recipe.serializers import RecipeSerializer, RecipeDetailSerializer
+
+from recipe.serializers import (
+    RecipeSerializer,
+    RecipeDetailSerializer,
+)
 
 
 RECIPES_URL = reverse('recipe:recipe-list')
@@ -53,13 +60,14 @@ class PublicRecipeAPITests(TestCase):
 
 class PrivateRecipeApiTests(TestCase):
     """Test authenticated API requests."""
+
     def setUp(self):
         self.client = APIClient()
         self.user = create_user(email='user@example.com', password='test123')
         self.client.force_authenticate(self.user)
 
-    def test_retrive_recipes(self):
-        """Test retriving a list of recipes."""
+    def test_retrieve_recipes(self):
+        """Test retrieving a list of recipes."""
         create_recipe(user=self.user)
         create_recipe(user=self.user)
 
@@ -72,8 +80,7 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_recipe_list_limited_to_user(self):
         """Test list of recipes is limited to authenticated user."""
-        other_user = create_user(email='other@example.com',
-                                 password='password123')
+        other_user = create_user(email='other@example.com', password='password123')
         create_recipe(user=other_user)
         create_recipe(user=self.user)
 
@@ -97,7 +104,7 @@ class PrivateRecipeApiTests(TestCase):
     def test_create_recipe(self):
         """Test creating a recipe."""
         payload = {
-            'title': 'Sample Recipe',
+            'title': 'Sample recipe',
             'time_minutes': 30,
             'price': Decimal('5.99'),
         }
@@ -134,12 +141,12 @@ class PrivateRecipeApiTests(TestCase):
             user=self.user,
             title='Sample recipe title.',
             link='htts://example.com/recipe.pdf',
-            description='Sample recipe description',
+            description='Sample recipe description. ',
         )
 
         payload = {
-            'title': 'Sample recipe title.',
-            'link': 'https://exmaple.com/new-recipe.pdf',
+            'title': 'New recipe title.',
+            'link': 'https://example.com/new-recipe.pdf',
             'description': 'New recipe description',
             'time_minutes': 10,
             'price': Decimal('2.50'),

@@ -1,5 +1,5 @@
 """
-Calculator Functions
+Calculator functions
 """
 
 
@@ -9,5 +9,5 @@ def add(x, y):
 
 
 def subtract(x, y):
-    """Subtracting the numbers"""
+    """Subtract x from y and return result."""
     return y - x
