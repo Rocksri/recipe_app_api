@@ -8,7 +8,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 from core.models import Recipe
-from recipe.serializers import RecipeSerializer
+from recipe.serializers import RecipeSerializer, RecipeDetailSerializer
 
 
 RECIPES_URL = reverse('recipe:recipe-list')
@@ -59,7 +59,7 @@ class PrivateRecipeApiTests(TestCase):
         self.client.force_authenticate(self.user)
 
     def test_retrive_recipes(self):
-        """Test retriving a list of recpies."""
+        """Test retriving a list of recipes."""
         create_recipe(user=self.user)
         create_recipe(user=self.user)
 
@@ -71,7 +71,7 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(res.data, serializer.data)
 
     def test_recipe_list_limited_to_user(self):
-        """Test list of reccipes is limited to authenticated user."""
+        """Test list of recipes is limited to authenticated user."""
         other_user = create_user(email='other@example.com',
                                  password='password123')
         create_recipe(user=other_user)
@@ -91,15 +91,15 @@ class PrivateRecipeApiTests(TestCase):
         url = detail_url(recipe.id)
         res = self.client.get(url)
 
-        serializer = RecipeSerializer(recipe)
+        serializer = RecipeDetailSerializer(recipe)
         self.assertEqual(res.data, serializer.data)
 
     def test_create_recipe(self):
-        """Test creating a recipe"""
+        """Test creating a recipe."""
         payload = {
             'title': 'Sample Recipe',
-            'time_minute': 30,
-            'price': Decimal('5.99')
+            'time_minutes': 30,
+            'price': Decimal('5.99'),
         }
         res = self.client.post(RECIPES_URL, payload)
 
@@ -109,7 +109,7 @@ class PrivateRecipeApiTests(TestCase):
             self.assertEqual(getattr(recipe, k), v)
         self.assertEqual(recipe.user, self.user)
 
-    def test_partial_upate(self):
+    def test_partial_update(self):
         """Test partial update of a recipe."""
         original_link = 'https://example.com/recipe.pdf'
         recipe = create_recipe(
@@ -139,7 +139,7 @@ class PrivateRecipeApiTests(TestCase):
 
         payload = {
             'title': 'Sample recipe title.',
-            'link': 'htts://example.com/new-recipe.pdf',
+            'link': 'https://exmaple.com/new-recipe.pdf',
             'description': 'New recipe description',
             'time_minutes': 10,
             'price': Decimal('2.50'),
