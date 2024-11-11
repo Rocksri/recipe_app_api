@@ -43,7 +43,7 @@ class PublicUserApiTests(TestCase):
         """Test error returned if user with email exists."""
         payload = {
             'email': 'test@example.com',
-            'password': 'testpass1234',
+            'password': 'testpass123',
             'name': 'Test Name',
         }
         create_user(**payload)
@@ -71,7 +71,7 @@ class PublicUserApiTests(TestCase):
         user_details = {
             'name': 'Test Name',
             'email': 'test@example.com',
-            'password': 'test-user-password1234',
+            'password': 'test-user-password123',
         }
         create_user(**user_details)
 
