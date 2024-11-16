@@ -43,7 +43,7 @@ class PrivateIngredientsApiTests(TestCase):
     """Test unauthenticated API requests."""
 
     def setUp(self):
-        self.user = create_user(email='user@example.com', password='test123')
+        self.user = create_user()
         self.client = APIClient()
         self.client.force_authenticate(self.user)
 
@@ -59,7 +59,7 @@ class PrivateIngredientsApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    def tes_ingredients_limited_to_user(self):
+    def test_ingredients_limited_to_user(self):
         """Test list of ingredients is limited to authenticated user."""
         user2 = create_user(email='user2@example.com')
         Ingredient.objects.create(user=user2, name='Salt')
@@ -92,4 +92,4 @@ class PrivateIngredientsApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         ingredients = Ingredient.objects.filter(user=self.user)
-        self.assertEqual(ingredients.exists())
+        self.assertFalse(ingredients.exists())

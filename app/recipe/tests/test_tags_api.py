@@ -23,7 +23,7 @@ def detail_url(tag_id):
 
 def create_user(email='user@example.com', password='testpass123'):
     """Create and return a user."""
-    return get_user_model().objects.create(email=email, password=password)
+    return get_user_model().objects.create_user(email=email, password=password)
 
 
 class PublicTagsApiTests(TestCase):
@@ -84,7 +84,7 @@ class PrivateTagsApiTests(TestCase):
         tag.refresh_from_db()
         self.assertEqual(tag.name, payload['name'])
 
-    def test_detele_tag(self):
+    def test_delete_tag(self):
         """Test deleting a tag."""
         tag = Tag.objects.create(user=self.user, name='Breakfast')
 
