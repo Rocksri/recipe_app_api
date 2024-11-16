@@ -211,10 +211,10 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         recipes = Recipe.objects.filter(user=self.user)
         self.assertEqual(recipes.count(), 1)
-        recipes = recipes[0]
-        self.assertEqual(recipes.tags.count(), 2)
+        recipe = recipes[0]
+        self.assertEqual(recipe.tags.count(), 2)
         for tag in payload['tags']:
-            exists = recipes.tags.filter(
+            exists = recipe.tags.filter(
                 name=tag['name'],
                 user=self.user,
             ).exists()
@@ -303,7 +303,7 @@ class PrivateRecipeApiTests(TestCase):
             exists = recipe.ingredients.filter(
                 name=ingredient['name'],
                 user=self.user,
-                ).exists()
+            ).exists()
             self.assertTrue(exists)
 
     def test_create_recipe_with_existing_ingredient(self):
