@@ -30,13 +30,12 @@ class TagSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     """Serializers for repices."""
     tags = TagSerializer(many=True, required=False)
-    ingredient = IngredientSerializer(many=True, required=True)
+    ingredients = IngredientSerializer(many=True, required=False)
 
     class Meta:
         model = Recipe
         fields = [
-            'id', 'title', 'time_minutes', 'price', 'link', 'tags',
-            'ingredients',
+            'id', 'title', 'time_minutes', 'price', 'link', 'tags', 'ingredients',
         ]
         read_only_fields = ['id']
 
@@ -63,10 +62,10 @@ class RecipeSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """create a recipe."""
         tags = validated_data.pop('tags', [])
-        ingredient = validated_data.pop('ingredient', [])
+        ingredients = validated_data.pop('ingredients', [])
         recipe = Recipe.objects.create(**validated_data)
         self._get_or_create_tags(tags, recipe)
-        self._get_or_create_ingredients(ingredient, recipe)
+        self._get_or_create_ingredients(ingredients, recipe)
 
         return recipe
 

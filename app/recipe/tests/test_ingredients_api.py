@@ -26,21 +26,21 @@ def create_user(email='user@example.com', password='testpass123'):
     return get_user_model().objects.create_user(email=email, password=password)
 
 
-class PublicIngredientsApiTests(TestCase):
+class PublicIngredientsApi(TestCase):
     """Test unauthenticated API requests."""
 
     def setUp(self):
         self.client = APIClient()
 
     def test_auth_required(self):
-        """Test auth is required for retrieving ingredients."""
+        """Test auth is required for retriving ingredients."""
         res = self.client.get(INGREDIENTS_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class PrivateIngredientsApiTests(TestCase):
-    """Test authenticated API requests."""
+    """Test unauthenticated API requests."""
 
     def setUp(self):
         self.user = create_user()
