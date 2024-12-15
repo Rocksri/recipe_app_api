@@ -204,7 +204,7 @@ class PrivateRecipeApiTests(TestCase):
             'title': 'Potato Curry',
             'time_minutes': 30,
             'price': Decimal('2.50'),
-            'tags': [{'name': 'Potato'}, {'name': 'Dinner'}]
+            'tags': [{'name': 'Potato'}, {'name': 'Dinner'}],
         }
         res = self.client.post(RECIPES_URL, payload, format='json')
 
@@ -245,7 +245,7 @@ class PrivateRecipeApiTests(TestCase):
             self.assertTrue(exists)
 
     def test_create_tag_on_update(self):
-        """Test creating tag when updating a recipe."""
+        """Test create tag when updating a recipe."""
         recipe = create_recipe(user=self.user)
 
         payload = {'tags': [{'name': 'Lunch'}]}
@@ -285,7 +285,7 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(recipe.tags.count(), 0)
 
     def test_create_recipe_with_new_ingredients(self):
-        """Test creating a recipe with new ingredients"""
+        """Test creating a recipe with new ingredients."""
         payload = {
             'title': 'Cauliflower tacos',
             'time_minutes': 60,
@@ -303,7 +303,7 @@ class PrivateRecipeApiTests(TestCase):
             exists = recipe.ingredients.filter(
                 name=ingredient['name'],
                 user=self.user,
-                ).exists()
+            ).exists()
             self.assertTrue(exists)
 
     def test_create_recipe_with_existing_ingredient(self):
@@ -312,7 +312,7 @@ class PrivateRecipeApiTests(TestCase):
         payload = {
             'title': 'Vietnamese Soup',
             'time_minutes': 25,
-            'price': Decimal('2.55'),
+            'price': '2.55',
             'ingredients': [{'name': 'Lemon'}, {'name': 'Fish Sauce'}],
         }
         res = self.client.post(RECIPES_URL, payload, format='json')
@@ -338,12 +338,12 @@ class PrivateRecipeApiTests(TestCase):
         res = self.client.patch(url, payload, format='json')
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        new_ingredient = Ingredient.objects.get(user=self.user, name='Liems')
+        new_ingredient = Ingredient.objects.get(user=self.user, name='Limes')
         self.assertIn(new_ingredient, recipe.ingredients.all())
 
     def test_update_recipe_assign_ingredient(self):
-        """Test assiging an existing ingredient when updating a recipe."""
-        ingredient1 = Ingredient.objects.create(user=self.user, name='pepper')
+        """Test assigning an existing ingredient when updating a recipe."""
+        ingredient1 = Ingredient.objects.create(user=self.user, name='Pepper')
         recipe = create_recipe(user=self.user)
         recipe.ingredients.add(ingredient1)
 

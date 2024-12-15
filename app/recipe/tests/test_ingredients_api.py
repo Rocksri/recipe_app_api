@@ -1,5 +1,5 @@
 """
-Tests for ingredients API.
+Tests for the ingredients API.
 """
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -27,7 +27,7 @@ def create_user(email='user@example.com', password='testpass123'):
 
 
 class PublicIngredientsApiTests(TestCase):
-    """Test unauthenticated API requests."""
+    """Test authenticated API requests."""
 
     def setUp(self):
         self.client = APIClient()
